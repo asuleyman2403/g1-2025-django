@@ -9,3 +9,6 @@ urlpatterns = [
     path('forgot-password/', forgot_password_view, name='forgot_password_page'),
     path('reset-password/<slug:token>', reset_password_view, name='reset_password_page')
 ]
+
+print('check')
+
