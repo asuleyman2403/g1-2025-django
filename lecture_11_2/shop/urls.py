@@ -14,3 +14,6 @@ urlpatterns = [
     path('add-to-basket/<int:pk>', add_to_basket_view, name='add_to_basket'),
     path('delete-from-basket/<int:pk>', delete_from_basket_view, name='delete_from_basket')
 ]
+
+print('check 2')
+
