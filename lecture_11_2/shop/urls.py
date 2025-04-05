@@ -16,4 +16,5 @@ urlpatterns = [
 ]
 
 print('check')
+print('check 2')
 
