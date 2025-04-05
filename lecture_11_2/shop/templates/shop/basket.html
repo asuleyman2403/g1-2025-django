@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Basket</title>
+{% endblock %}
+{% block content %}
+{% include 'header.html' %}
+<div class="container">
+    <div class="row div col-12">
+        <table class="table mt-4">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Price in KZT</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if orders|length > 0 %}
+            {% for order in orders %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ order.id }}</td>
+                <td>{{ order.product.name}}</td>
+                <td>{{ order.product.category.name}}</td>
+                <td>{{ order.product.description }}</td>
+                <td>{{ order.amount }}</td>
+                <td>{{ order.product.price }} KZT</td>
+                <td>
+                    <a href="{% url 'delete_from_basket' pk=order.id %}">
+                        <button class="btn btn-danger">Delete from basket</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="8" class="text-center">
+                    No basket items yet
+                </td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

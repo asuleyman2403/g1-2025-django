@@ -1,0 +1,43 @@
+<table class="table mt-4">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Category</th>
+        <th scope="col">Description</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Price in KZT</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if products|length > 0 %}
+    {% for product in products %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ product.id }}</td>
+        <td>{{ product.name}}</td>
+        <td>{{ product.category.name}}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.amount }}</td>
+        <td>{{ product.price }} KZT</td>
+        <td>
+            <a href="{% url 'edit_product_page' pk=product.id %}">
+                <button class="btn btn-primary">Edit</button>
+            </a>
+            <a href="{% url 'delete_product_page' pk=product.id %}">
+                <button class="btn btn-danger">Delete</button>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="6" class="text-center">
+            No products yet
+        </td>
+    </tr>
+    {% endif %}
+    </tbody>
+</table>

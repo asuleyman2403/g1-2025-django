@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Categories page</title>
+{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {% include 'header.html' %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h1 class="mt-4">Category page</h1>
+            {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+            <form action="{% url 'index_page' %}" method="POST" class="my-2" autocomplete="off">
+                {% csrf_token %}
+                {{ form.errors }}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Create Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table mt-4">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if categories|length > 0 %}
+                {% for category in categories %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name}}</td>
+                    <td>
+                         <a href="{% url 'category_details_page' pk=category.id %}">
+                            <button class="btn btn-primary">Details</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">
+                        No categories yet
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+

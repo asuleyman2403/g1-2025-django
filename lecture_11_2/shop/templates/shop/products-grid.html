@@ -1,0 +1,132 @@
+<div class="row mt-4 g-4">
+    <div class="col-3">
+            <label for="name">Search</label>
+            <input value="{{ name }}" name="name" id="name" class="form-control" />
+    </div>
+    <div class="col-3">
+            <label for="min_price">Min price</label>
+            <input value="{{ min_price }}" name="min_price" id="min_price" class="form-control" />
+    </div>
+    <div class="col-3">
+            <label for="order_by">Max price</label>
+            <input value="{{ max_price }}" name="max_price" id="max_price"  class="form-control" />
+    </div>
+    <div class="col-3 d-flex align-items-end justify-content-end">
+            <button class="btn btn-primary" onclick="handleFilterChange()">Apply filters</button>
+    </div>
+    <div class="col-3 offset-6">
+            <label for="order_by">Sort by</label>
+            <select class="form-select" aria-label="size" id="order_by" name="order_by"
+                    onchange="handleOrderByChange(event)">
+                <option value="name" {% if order_by == 'name' %} selected {% endif %}>A - Z</option>
+                <option value="-name" {% if order_by == '-name' %} selected {% endif %}>Z - A</option>
+                <option value="price" {% if order_by == 'price' %} selected {% endif %}>From cheapest to expensive</option>
+                <option value="-price" {% if order_by == '-price' %} selected {% endif %}>From expensive to cheapest</option>
+            </select>
+    </div>
+    <div class="col-3">
+            <label for="size">Size</label>
+            <select class="form-select" aria-label="size" id="size" name="size" onchange="handleSizeChange(event)">
+                {% for size in sizes %}
+                {% if paginator.per_page == size %}
+                <option value="{{ size }}" selected>{{ size }}</option>
+                {% else %}
+                <option value="{{ size }}">{{ size }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+    </div>
+</div>
+<div class="row my-2 g-4">
+    {% for product in page_obj %}
+    <div class="col-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description}}</p>
+                <div>{{ product.price }} KZT</div>
+                <a href="{% url 'add_to_basket' pk=product.id %}">
+                    <button class="btn btn-primary">Add to basket</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="col-12 d-flex justify-content-center align-items-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Previous"
+                       onclick="handlePaginationChange(1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Previous"
+                       onclick="handlePaginationChange({{ page_obj.number|add:-1 }})">
+                        <span aria-hidden="true"> < </span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for page in paginator.page_range %}
+                {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                <li class="page-item">
+                    <a class="page-link {% if page == page_obj.number %} active {% endif %}" href="javascript:void(0)"
+                       onclick="handlePaginationChange({{ page }})">
+                        {{ page }}
+                    </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Next"
+                       onclick="handlePaginationChange({{ page_obj.number|add:1 }})">
+                        <span aria-hidden="true"> > </span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)" aria-label="Next"
+                       onclick="handlePaginationChange({{ paginator.num_pages }})">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <script>
+        const handlePaginationChange = (page) => {
+            const params = (new URL(document.location)).searchParams;
+            params.set('page', page);
+            window.location.search = params.toString();
+        }
+
+        const handleSizeChange = (event) => {
+            const value = event.target.value;
+            const params = (new URL(document.location)).searchParams;
+            params.set('size', value);
+            window.location.search = params.toString();
+        }
+
+        const handleOrderByChange = (event) => {
+            const value = event.target.value;
+            const params = (new URL(document.location)).searchParams;
+            params.set('order_by', value);
+            params.set('page', 1);
+            window.location.search = params.toString();
+        }
+
+        const handleFilterChange = () => {
+            const min_price = document.getElementById('min_price').value;
+            const max_price = document.getElementById('max_price').value;
+            const name = document.getElementById('name').value;
+            const params = (new URL(document.location)).searchParams;
+            params.set('min_price', min_price);
+            params.set('max_price', max_price);
+            params.set('name', name);
+            window.location.search = params.toString();
+        }
+    </script>
+</div>

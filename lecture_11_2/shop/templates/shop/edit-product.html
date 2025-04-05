@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>{{ product.name }}</title>
+{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {% include 'header.html' %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h1 class="mt-4">Edit {{ product.name }}</h1>
+            {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+            <form action="{% url 'edit_product_page' pk=product.id %}" method="POST" class="my-2" autocomplete="off">
+                {% csrf_token %}
+                {{ form.errors }}
+                {% include 'shop/product-fields.html' %}
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Edit Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

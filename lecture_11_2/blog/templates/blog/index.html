@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Index page</title>
+    </head>
+    <body>
+        <h1>Main page</h1>
+        <ol>
+        {% for product in products %}
+            <li>{{ product.name }} -- {{ product.price }} KZT</li>
+        {% endfor %}
+        </ol>
+    </body>
+</html>s

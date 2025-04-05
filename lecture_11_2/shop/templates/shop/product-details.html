@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>{{ product.name }}</title>
+{% endblock %}
+{% block content %}
+{% include 'header.html' %}
+<h1>Product details</h1>
+<h5>{{ product.name }}</h5>
+<h5>{{ product.amount }}</h5>
+<h5>{{ product.price }} KZT</h5>
+<p>{{ product.description }}</p>
+{% include 'footer.html' %}
+{% endblock %}
