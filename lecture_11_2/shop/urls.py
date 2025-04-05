@@ -15,6 +15,5 @@ urlpatterns = [
     path('delete-from-basket/<int:pk>', delete_from_basket_view, name='delete_from_basket')
 ]
 
-print('check')
 print('check 2')
 
